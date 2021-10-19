@@ -165,6 +165,7 @@
       <DependentUpon>Feuil9.Designer.xml</DependentUpon>
     </Compile>
     <Compile Include="IFeuil2.cs" />
+    <Compile Include="IFeuil4.cs" />
     <Compile Include="IFeuil9.cs" />
     <Compile Include="NDExpo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -250,6 +251,12 @@
     <None Include="Feuil5.Designer.xml">
       <DependentUpon>Feuil5.cs</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\webexpo\webExpoLib.csproj">
+      <Project>{eaef21b2-e7fa-4421-81f7-0d09c9f3c701}</Project>
+      <Name>webExpoLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
