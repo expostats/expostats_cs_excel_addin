@@ -1,0 +1,7 @@
+﻿<hostitem:hostItem hostitem:baseType="Microsoft.Office.Tools.Excel.WorksheetBase" hostitem:namespace="ExpostatsExcel2013AddIn" hostitem:className="Feuil4" hostitem:identifier="Feuil4" hostitem:primaryCookie="Feuil4" hostitem:factoryType="Microsoft.Office.Tools.Excel.Factory" hostitem:startupIndex="5" xmlns:hostitem="http://schemas.microsoft.com/2004/VisualStudio/Tools/Applications/HostItem.xsd">
+  <hostitem:hostControl hostitem:name="mu" hostitem:identifier="mu" hostitem:type="Microsoft.Office.Tools.Excel.NamedRange" hostitem:primaryCookie="mu" hostitem:extenderCookie="" hostitem:modifier="Internal" />
+  <hostitem:hostControl hostitem:name="Raw_data" hostitem:identifier="Raw_data" hostitem:type="Microsoft.Office.Tools.Excel.NamedRange" hostitem:primaryCookie="Raw_data" hostitem:extenderCookie="" hostitem:modifier="Internal" />
+  <hostitem:hostControl hostitem:name="sd" hostitem:identifier="sd" hostitem:type="Microsoft.Office.Tools.Excel.NamedRange" hostitem:primaryCookie="sd" hostitem:extenderCookie="" hostitem:modifier="Internal" />
+  <hostitem:hostControl hostitem:name="Start_Mu" hostitem:identifier="Start_Mu" hostitem:type="Microsoft.Office.Tools.Excel.NamedRange" hostitem:primaryCookie="Start_Mu" hostitem:extenderCookie="" hostitem:modifier="Internal" />
+  <hostitem:hostControl hostitem:name="Start_sd" hostitem:identifier="Start_sd" hostitem:type="Microsoft.Office.Tools.Excel.NamedRange" hostitem:primaryCookie="Start_sd" hostitem:extenderCookie="" hostitem:modifier="Internal" />
+</hostitem:hostItem>
