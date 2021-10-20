@@ -62,7 +62,16 @@ namespace ExpostatsExcel2013AddIn
             }
         }
 
-
+        public void EraseMCMCChains()
+        {
+            /* Clear previous results */
+            int lastUsedRow = this.Cells.Find("*", System.Reflection.Missing.Value,
+                               System.Reflection.Missing.Value, System.Reflection.Missing.Value,
+                               Excel.XlSearchOrder.xlByRows, Excel.XlSearchDirection.xlPrevious,
+                               false, System.Reflection.Missing.Value, System.Reflection.Missing.Value).Row;
+            String RangeToClear = String.Format("{0}:{1}{2}", MCMC_CHAINS_RESULT_CELL_POS, (char) (((int) MCMC_CHAINS_RESULT_CELL_POS[0])+MCMC_CHAINS_RESULT_COL_WIDTH), lastUsedRow);
+            this.Range[RangeToClear].Clear(); ;
+        }
 
         private Dictionary<string, double[]> GetMcmcChains(String obsstr, String sep, double oel, int niter)
         {
