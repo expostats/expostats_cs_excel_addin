@@ -29,6 +29,7 @@ namespace ExpostatsExcel2013AddIn
 
         private void Feuil2_Startup(object sender, System.EventArgs e)
         {
+            Application.Run("Compiler");
         }
 
         private void Feuil2_Shutdown(object sender, System.EventArgs e)
