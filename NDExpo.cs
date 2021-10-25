@@ -164,7 +164,7 @@ class NDExpo
         }
 
         public List<Datum> dataSet;
-        int error = 0;
+        public int error = 0;
         bool grouping = true;
         public Count count = new Count(0, 0);
 
@@ -274,7 +274,7 @@ class NDExpo
             }
             if (this.count.nd == 0)
             {
-                this.error = NDExpo.WARN_NO_ND;
+                //this.error = NDExpo.WARN_NO_ND;
             }
             this.detectionLimitArray = new List<DetectionLimit>();
 

@@ -11,6 +11,6 @@ C:\Users\p0070611\Documents\Visual Studio 2019\Projects\ExpostatsExcel2013AddIn\
 C:\Users\p0070611\Documents\Visual Studio 2019\Projects\ExpostatsExcel2013AddIn\ExpostatsExcel2013AddIn\obj\Release\ExpostatsExcel2013AddIn.Properties.Resources.resources
 C:\Users\p0070611\Documents\Visual Studio 2019\Projects\ExpostatsExcel2013AddIn\ExpostatsExcel2013AddIn\obj\Release\ExpostatsExcel2013AddIn.csproj.GenerateResource.cache
 C:\Users\p0070611\Documents\Visual Studio 2019\Projects\ExpostatsExcel2013AddIn\ExpostatsExcel2013AddIn\obj\Release\ExpostatsExcel2013AddIn.csproj.CoreCompileInputs.cache
-C:\Users\p0070611\Documents\Visual Studio 2019\Projects\ExpostatsExcel2013AddIn\ExpostatsExcel2013AddIn\obj\Release\ExpostatsExcel2013AddIn.csproj.CopyComplete
 C:\Users\p0070611\Documents\Visual Studio 2019\Projects\ExpostatsExcel2013AddIn\ExpostatsExcel2013AddIn\obj\Release\ExpostatsExcel2013AddIn.dll
 C:\Users\p0070611\Documents\Visual Studio 2019\Projects\ExpostatsExcel2013AddIn\ExpostatsExcel2013AddIn\obj\Release\ExpostatsExcel2013AddIn.pdb
+C:\Users\p0070611\Documents\Visual Studio 2019\Projects\ExpostatsExcel2013AddIn\ExpostatsExcel2013AddIn\obj\Release\ExpostatsExcel2013AddIn.csproj.CopyComplete

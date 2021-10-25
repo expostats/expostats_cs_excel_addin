@@ -41,25 +41,40 @@ namespace ExpostatsExcel2013AddIn
         {
             return Utils.WORK_COMPLETED_MSG;
         }
-        public void CalcMCMCChains(String obs, String sep, double oel, bool confirmDelay = false)
+        public String CalcMCMCChains(String obs, String sep, double oel, bool confirmDelay = false)
         {
             int estimatedDelaySecs = 10;
+            String err = "";
+            Dictionary<string, double[]> mcmcChains = new Dictionary<string, double[]>();
+
             if (!confirmDelay || Utils.ShowPopUpMsg(GetDelayWarningMsg(estimatedDelaySecs), MessageBoxButton.YesNo, MessageBoxImage.Exclamation) == MessageBoxResult.Yes)
             {
-                Dictionary<string, double[]> mcmcChains = GetMcmcChains(obs, sep, oel, N_ITER);
-
-                char startCol = MCMC_CHAINS_RESULT_CELL_POS[0];
-                int startRow = int.Parse(MCMC_CHAINS_RESULT_CELL_POS.Substring(1).ToString());
-
-                for (int j = 0; j <= chainNames.Length; j++)
+                try
                 {
-                    char col = (char)(startCol + j);
-                    double[] vals = j > 0
-                        ? mcmcChains[chainNames[j - 1]].ToArray()
-                        : Enumerable.Range(1, N_ITER).Select(i => Convert.ToDouble(i)).ToArray();
-                    Utils.WriteRange(this.Range, vals, col, startRow);
+                    mcmcChains = GetMcmcChains(obs, sep, oel, N_ITER);
+                }
+                catch (Exception e)
+                {
+                    err = e.Message;
+                }
+
+                if (err == "")
+                {
+                    char startCol = MCMC_CHAINS_RESULT_CELL_POS[0];
+                    int startRow = int.Parse(MCMC_CHAINS_RESULT_CELL_POS.Substring(1).ToString());
+
+                    for (int j = 0; j <= chainNames.Length; j++)
+                    {
+                        char col = (char)(startCol + j);
+                        double[] vals = j > 0
+                            ? mcmcChains[chainNames[j - 1]].ToArray()
+                            : Enumerable.Range(1, N_ITER).Select(i => Convert.ToDouble(i)).ToArray();
+                        Utils.WriteRange(this.Range, vals, col, startRow);
+                    }
                 }
             }
+
+            return err;
         }
 
         public void EraseMCMCChains()

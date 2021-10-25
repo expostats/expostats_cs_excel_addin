@@ -3,7 +3,7 @@
     [System.Runtime.InteropServices.ComVisible(true)]
     public interface IFeuil9
     {
-        string ReadObservations(string sep);
+        string ReadObservations(ref string obs, string sep);
         string Ohhai();
     }
 }

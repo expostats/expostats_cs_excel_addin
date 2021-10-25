@@ -26,11 +26,12 @@ namespace ExpostatsExcel2013AddIn
         {
         }
 
-        public String ReadObservations(String sep)
+        public String ReadObservations(ref String obs, String sep)
         {
             String err;
-            String[] obs = ReadObservations(out err);
-            return String.Join(sep, obs);
+            String[] obsArr = ReadObservations(out err);
+            obs = String.Join(sep, obsArr);
+            return err;
         }
 
         public String[] ReadObservations(out String errMsg)

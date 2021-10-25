@@ -1,9 +1,11 @@
-﻿namespace ExpostatsExcel2013AddIn
+﻿using System;
+
+namespace ExpostatsExcel2013AddIn
 {
     [System.Runtime.InteropServices.ComVisible(true)]
     public interface IFeuil4
     {
-        void CalcMCMCChains(string obs, string sep, double oel, bool confirmDelay = false);
+        String CalcMCMCChains(string obs, string sep, double oel, bool confirmDelay = false);
 
         void EraseMCMCChains();
         string GetDelayWarningMsg(int delaySecs);

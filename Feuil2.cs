@@ -29,7 +29,7 @@ namespace ExpostatsExcel2013AddIn
 
         private void Feuil2_Startup(object sender, System.EventArgs e)
         {
-            Application.Run("Compiler");
+            //Application.Run("Compiler");
         }
 
         private void Feuil2_Shutdown(object sender, System.EventArgs e)
@@ -51,7 +51,7 @@ namespace ExpostatsExcel2013AddIn
             this.Range[range2ToClear].Clear();
         }
 
-        public void CalcROSResults(String obs_concat, String sep)
+        public String CalcROSResults(String obs_concat, String sep)
         {
             NDExpo nde = new NDExpo();
             nde.reset();
@@ -114,52 +114,74 @@ namespace ExpostatsExcel2013AddIn
                     }
 
                     nde.doCalc();
-                    NDExpo.GraphData gdata = new NDExpo.GraphData(nde);
-                    gdata.getDataForChart();
+                    if (nde.error == 0) {
+                        NDExpo.GraphData gdata = new NDExpo.GraphData(nde);
+                        gdata.getDataForChart();
 
-                    EraseROSResults();
+                        EraseROSResults();
 
-                    int rowWidth = (int)ROS_OBS_OUTPUT_CELL_ADDR.Item3 - ROS_OBS_OUTPUT_CELL_ADDR.Item1 + 1;
-                    object[,] contents = new object[nde.dataSet.Count, rowWidth];
-                    int rowI = 0;
-                    bool writeCol = false;
-                    int totalND = 0;
-                    foreach (NDExpo.Datum d in nde.dataSet)
-                    {
-                        object[] rw = new object[]
-                        {
-                                                d.position+1,
-                                                d.isND == 1 ? d.detectionLimitValue : d.value,
-                                                d.isND,
-                                                d.plottingPosition,
-                                                d.score,
-                                                d.finalValue,
-                                                Math.Log(d.finalValue)
-                        };
-                        CopyRow(contents, rw, rowI++);
-                        totalND += d.isND;
-                    }
-                    Utils.WriteRange(this.Range, contents, ROS_OBS_OUTPUT_CELL_ADDR.Item1, ROS_OBS_OUTPUT_CELL_ADDR.Item2);
-                    Utils.WriteRange(this.Range, new object[] { nde.global.slope, nde.global.intercept }, ROS_REG_OUTPUT_CELL_ADDR.Item1, ROS_REG_OUTPUT_CELL_ADDR.Item2, writeCol);
-
-                    int[] nRowsMini = { nde.dataSet.Count - totalND, totalND };
-                    for (int nd = 0; nd <= 1; nd++)
-                    {
-                        object[,] miniTable = new object[nRowsMini[nd], 2];
-                        int i = 0;
-
+                        int rowWidth = (int)ROS_OBS_OUTPUT_CELL_ADDR.Item3 - ROS_OBS_OUTPUT_CELL_ADDR.Item1 + 1;
+                        object[,] contents = new object[nde.dataSet.Count, rowWidth];
+                        int rowI = 0;
+                        bool writeCol = false;
+                        int totalND = 0;
                         foreach (NDExpo.Datum d in nde.dataSet)
                         {
-                            if (d.isND == nd)
+                            object[] rw = new object[]
                             {
-                                CopyRow(miniTable, new object[] { d.score, Math.Log(d.finalValue) }, i++);
-                            }
+                                                    d.position+1,
+                                                    d.isND == 1 ? d.detectionLimitValue : d.value,
+                                                    d.isND,
+                                                    d.plottingPosition,
+                                                    d.score,
+                                                    d.finalValue,
+                                                    Math.Log(d.finalValue)
+                            };
+                            CopyRow(contents, rw, rowI++);
+                            totalND += d.isND;
                         }
-                        char col = (char)(ROS_DET_OUTPUT_CELL_ADDR.Item1 + 2 * nd);
-                        Utils.WriteRange(this.Range, miniTable, col, START_ROW_IDX);
-                    }
+                        Utils.WriteRange(this.Range, contents, ROS_OBS_OUTPUT_CELL_ADDR.Item1, ROS_OBS_OUTPUT_CELL_ADDR.Item2);
+                        Utils.WriteRange(this.Range, new object[] { nde.global.slope, nde.global.intercept }, ROS_REG_OUTPUT_CELL_ADDR.Item1, ROS_REG_OUTPUT_CELL_ADDR.Item2, writeCol);
 
-                    this.Columns.AutoFit();
+                        int[] nRowsMini = { nde.dataSet.Count - totalND, totalND };
+                        for (int nd = 0; nd <= 1; nd++)
+                        {
+                            object[,] miniTable = new object[nRowsMini[nd], 2];
+                            int i = 0;
+
+                            foreach (NDExpo.Datum d in nde.dataSet)
+                            {
+                                if (d.isND == nd)
+                                {
+                                    CopyRow(miniTable, new object[] { d.score, Math.Log(d.finalValue) }, i++);
+                                }
+                            }
+                            char col = (char)(ROS_DET_OUTPUT_CELL_ADDR.Item1 + 2 * nd);
+                            Utils.WriteRange(this.Range, miniTable, col, START_ROW_IDX);
+                        }
+
+                        this.Columns.AutoFit();
+                    } else
+                    {
+                        switch (nde.error)
+                        {
+                            case NDExpo.ERR_TOOMANY_ND:
+                                err = "The proportion of non-detects cannot be greater than 80%";
+                                break;
+                            case NDExpo.ERR_GRTSTDL:
+                                err = "The highest limit of detection cannot be higher than the highest detected value";
+                                break;
+                            case NDExpo.ERR_NENGH_DATA:
+                                err = "The procedure requires at least 5 observations";
+                                break;
+                            case NDExpo.ERR_NENGH_DET:
+                                err = "The procedure requires at least 3 detected observations";
+                                break;
+                            default:
+                                err = "Unknown error";
+                                break;
+                        }                           
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -167,10 +189,7 @@ namespace ExpostatsExcel2013AddIn
                 }
             }
 
-            if (err != "")
-            {
-                Utils.ShowPopUpMsg(err, MessageBoxButton.OK, MessageBoxImage.Exclamation);
-            }
+            return err;
         }
 
         private Microsoft.Office.Tools.Excel.NamedRange namedRange1;
