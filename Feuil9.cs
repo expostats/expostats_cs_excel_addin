@@ -4,8 +4,10 @@ using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.VisualStudio.Tools.Applications.Runtime;
+using Zygotine.WebExpo;
 using Excel = Microsoft.Office.Interop.Excel;
 using Office = Microsoft.Office.Core;
+using Range = Microsoft.Office.Interop.Excel.Range;
 
 namespace ExpostatsExcel2013AddIn
 {
@@ -37,10 +39,10 @@ namespace ExpostatsExcel2013AddIn
         public String[] ReadObservations(out String errMsg)
         {
             String[] obsArr = null;
-            errMsg = "";
+            errMsg = "Invalid observation value(s) or too few observations";
             Range obsCells;
             int elemCount = 0;
-            Object[,] obsData;
+            Object[,] obsData = null;
 
             bool nullCellFound = false;
             int obsCount;
@@ -61,19 +63,36 @@ namespace ExpostatsExcel2013AddIn
             {
                 obsArr = new string[obsCount];
                 var rng = String.Format("{0}:{1}{2}", MEAS_LIST_START_CELL_POS, measCol, measEndRowIdx);
-                obsCells = this.Range[rng];
-                obsData = obsCells.Value2;
-
+                if (obsCount > 1)
+                {
+                    obsCells = this.Range[rng];
+                    obsData = obsCells.Value2;
+                }
+                else if ( obsCount == 1 )
+                {
+                    obsData = new Object[1, 1];
+                    double singleCellVal = this.Cells[measStartRowIdx - '0', ColIndex(measCol)].Value;
+                    obsData[0,0] = singleCellVal;
+                }
+                
                 foreach (object elem in obsData)
                 {
                     String obsStr = elem.ToString();
                     obsArr[elemCount] = obsStr;
                     elemCount++;
                 }
+
+                // Use dummy val just to validate observations
+                double dummyOel = 99.9;
+                MeasureList ml = new MeasureList(obsArr, dummyOel);
+                if (ml.Error.lst.Count == 0)
+                {
+                    errMsg = "";
+                }
             }
             catch (Exception)
             {
-                errMsg = "Invalid observation value(s) or too few observations";
+                
             }
 
             return obsArr;
